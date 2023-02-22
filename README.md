@@ -14,7 +14,7 @@ Here's a copy of some of my coding exercises. Enjoy__ 😁
 `Select *
 From Notes.Pets
 `
--- Columns are petID, petname, perDOB, FriendID
+-- Columns are petID, petname, petDOB, FriendID
 
 `Select PetName
 From Notes.Pets
