@@ -9,6 +9,8 @@ Here's a copy of some of my coding exercises. Enjoy__ 😁
 
 -- 1. Retrieve only the names of all pets.
 
+-- I try to see all the columns first to know which have the names
+
 `Select *
 From Notes.Pets
 `
