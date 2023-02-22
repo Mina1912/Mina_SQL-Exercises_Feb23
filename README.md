@@ -8,9 +8,10 @@ Here's a copy of some of my coding exercises. Enjoy__ 😁
 -- Exercise 2.7.1 --
 
 -- 1. Retrieve only the names of all pets.
-```Select *
+
+`Select *
 From Notes.Pets
-```
+`
 -- Columns are petID, petname, perDOB, FriendID
 
 `Select PetName
@@ -19,12 +20,14 @@ From Notes.Pets
 
 --2. Retrieve the names of all pets that belong to the friend with FriendID
 --equal to 3. Do not join any tables
+
 `Select PetName
 From Notes.Pets 
 Where FriendID = 3
 `
 
 --3. Display the first and last names of all friends whose favourite colour is red.
+
 `Select *
 From Notes.Friends
 `
@@ -38,5 +41,13 @@ Where FavColour = 'red';
 `
 -- First attempt it gave only lastname column because I missed out the comma after firstname
 
---4. 
+--4. Execute the following query and explain what it does
+  
+`SELECT ScratcherID, ScratchDate, ScratchTime, ScratcheeID
+FROM Notes.Scratched -- in MySQL, use Notes_Scratched instead
+WHERE ScratchDate = '20180905'
+`
+
+-- 
+
 
