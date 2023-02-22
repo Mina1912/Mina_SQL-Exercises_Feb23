@@ -47,7 +47,25 @@ Where FavColour = 'red';
 FROM Notes.Scratched -- in MySQL, use Notes_Scratched instead
 WHERE ScratchDate = '20180905'
 `
+-- The query is to filter the rows and scratcherID, scratchdate, scratchTime and ScratcheeID columns  
+-- from the notes.scratched table, for the scratch date '2018-09-05'
 
--- 
+-- 5. Return all records where ScratchDate is on or before 6th Sep, 2018
+
+`SELECT ScratcherID, ScratchDate, ScratchTime, ScratcheeID
+FROM Notes.Scratched 
+WHERE ScratchDate <= '20180906'
+`
+
+-- 6. Retrieve the ScratcheeID and ScratcherID for all people who have
+-- participated in back scratching between the hours of 11AM and 12PM (inclusive).
+
+`SELECT ScratcheeID, ScratcherID
+FROM Notes.Scratched 
+WHERE ScratchTime >='11:00:00' AND ScratchTime <= '12:00:00';
+`
+
+-- Recurrent errors at first because I forgot to include the attribute (column) name after AND 
+
 
 
