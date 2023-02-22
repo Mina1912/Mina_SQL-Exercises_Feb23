@@ -39,6 +39,7 @@ From Notes.Friends
 From Notes.Friends
 Where FavColour = 'red';
 `
+
 -- First attempt it gave only lastname column because I missed out the comma after firstname
 
 --4. Execute the following query and explain what it does
@@ -47,6 +48,7 @@ Where FavColour = 'red';
 FROM Notes.Scratched -- in MySQL, use Notes_Scratched instead
 WHERE ScratchDate = '20180905'
 `
+
 -- The query is to filter the rows and scratcherID, scratchdate, scratchTime and ScratcheeID columns  
 -- from the notes.scratched table, for the scratch date '2018-09-05'
 
