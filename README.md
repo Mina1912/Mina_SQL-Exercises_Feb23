@@ -69,5 +69,15 @@ WHERE ScratchTime >='11:00:00' AND ScratchTime <= '12:00:00';
 
 -- Recurrent errors at first because I forgot to include the attribute (column) name after AND 
 
+-- 7. Retrieve the ScratcherID for all people who scratched a back either
+-- at 11AM on Sep 6th, 2018, or at 10AM on Sep 7th, 2018
+
+`Select ScratcherID
+From Notes.Scratched
+Where ScratchDate = '20180906' AND ScratchTime = '11:00:00' 
+    OR ScratchDate = '20180907' AND ScratchTime = '10:00:00'
+`
+
+
 
 
