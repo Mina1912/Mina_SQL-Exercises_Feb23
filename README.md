@@ -5,7 +5,7 @@ NZSSN SQL training - February 2023
 __Fun but challenging so far 😥
 Here's a copy of some of my coding exercises. Enjoy__ 😁
 
--- Exercise 2.7.1 --
+-- __Exercise 2.7.1__ --
 
 -- 1. Retrieve only the names of all pets.
 
@@ -80,7 +80,8 @@ Where ScratchDate = '20180906' AND ScratchTime = '11:00:00'
     OR ScratchDate = '20180907' AND ScratchTime = '10:00:00'
 `
 
--- 2.7.2 --
+-- __Exercise 2.7.2__ --
+
 -- 1. Retrieve the Colours table, but rename the Comments column to ‘Ape Opinions’.
 
 `
