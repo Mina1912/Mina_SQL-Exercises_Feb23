@@ -80,6 +80,59 @@ Where ScratchDate = '20180906' AND ScratchTime = '11:00:00'
     OR ScratchDate = '20180907' AND ScratchTime = '10:00:00'
 `
 
+-- 2.7.2 --
+-- 1. Retrieve the Colours table, but rename the Comments column to ‘Ape Opinions’.
+
+`
+Select *
+From Ape.Colours;`  -- To view the columns on the table
+
+`
+SELECT Comments AS 'Ape Opinions'
+From Ape.Colours;
+`
+
+-- 2. Order the Colours table, in descending order of colour names 
+
+`
+SELECT *
+FROM Ape.Colours
+ORDER BY ColourName DESC;
+`
+
+
+-- 3. Order the Scratched table by date of scratching and time of scratching
+
+`
+SELECT *
+FROM Notes.Scratched
+ORDER BY ScratchDate, ScratchTime;
+`
+
+-- 4. Order the Scratched table by date of scratching (desc) and time of scratching (asc)
+
+`
+SELECT *
+FROM Notes.Scratched
+ORDER BY ScratchDate DESC, ScratchTime ASC;
+`
+
+-- 5. Reproduce the Colours table, but rename the colour ‘magenta’ to purple, and the colour ‘turquoise’ to ‘blue’ p.68 
+
+`
+SELECT ColourID, ColourName, Comments,
+        CASE WHEN ColourName = 'magenta' THEN 'purple'
+             WHEN ColourName = 'turquoise' THEN 'blue' 
+        ELSE ColourName END AS SimplerColourNames
+FROM Ape.Colours
+`
+
+-- 'Case when' creates a new column, better to name it in the query. It doesn't replace the values in the existing Colour column
+-- Kept having errors because no comma after the last specified column name before 'case when'
+
+
+
+
 
 
 
