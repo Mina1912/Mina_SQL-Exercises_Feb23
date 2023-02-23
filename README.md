@@ -117,6 +117,8 @@ SELECT *
 FROM Notes.Scratched
 ORDER BY ScratchDate DESC, ScratchTime ASC;
 `
+-- Seems ASC order is the default so even if not specified after ScratchTime, will still be in ascending order
+
 
 -- 5. Reproduce the Colours table, but rename the colour ‘magenta’ to purple, and the colour ‘turquoise’ to ‘blue’ p.68 
 
@@ -132,6 +134,98 @@ FROM Ape.Colours
 -- Kept having errors because no comma after the last specified column name before 'case when'
 
 
+--__Exercise 2.7.3__ --
+
+-- 1. Use the IN operator to return the names of all home owners in the postcodes 3128, 3142 and 3083
+
+`
+Select *
+FROM Notes.Houses
+`
+-- To view table
+
+`
+SELECT house_owner, post_code
+FROM Notes.Houses
+WHERE post_code IN (3128, 3142, 3083) 
+`
+
+-- alternative query below  --
+
+`
+SELECT house_owner, post_code
+FROM Notes.Houses
+WHERE post_code = '3128' OR post_code = '3142' OR post_code = '3083' 
+`
+
+-- 2. Use the LIKE operator to get the street address (ignoring suburb name) of all houses that are on an avenue.
+
+`
+SELECT house_address 
+FROM Notes.Houses 
+WHERE house_address LIKE '%Ave' 
+`
+
+-- 3. Use NOT, with LIKE, to get the house_ID of every house that is not on an avenue.
+
+`
+SELECT house_ID, house_address 
+FROM Notes.Houses 
+WHERE house_address NOT LIKE '%Ave' 
+`
+
+--- 4. Houses with post code starting with ‘31’ and that also cost strictly less than $300,000.
+
+`
+SELECT house_address, post_code, house_price
+FROM Notes.Houses
+WHERE post_code LIKE '31%' AND house_price < 300000;
+`
+
+-- alternatively --
+
+`
+SELECT house_address, post_code, house_price
+FROM Notes.Houses
+WHERE post_code LIKE '31__' AND house_price < 300000;
+`
+
+`
+SELECT house_address, post_code, house_price
+FROM Notes.Houses
+WHERE post_code LIKE '31__%' AND house_price < 300000;
+`
+
+-- 'IN' and comparison operator '=' did not work for postcodes using wildcard symbol, only when full postcode specified
+-- After 'IN' round brackets must be used, else error. 
+
+`
+SELECT house_address, post_code, house_price
+FROM Notes.Houses
+WHERE post_code = 3128 AND house_price < 300000;
+`
+
+`
+SELECT house_address, post_code, house_price
+FROM Notes.Houses
+WHERE post_code IN (3128) AND house_price < 300000;
+`
+
+-- 5. Use BETWEEN to find all suburbs with a 40%–70% vaccination rate.
+
+`
+SELECT suburb_name, vaccination_rate
+FROM Notes.Suburbs
+WHERE vaccination_rate BETWEEN 0.40 AND 0.70;
+`
+
+-- Instead of
+
+`
+SELECT suburb_name, vaccination_rate
+FROM Notes.Suburbs
+WHERE vaccination_rate >= 0.40 AND vaccination_rate <= 0.70;
+`
 
 
 
