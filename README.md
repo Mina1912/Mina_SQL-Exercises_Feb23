@@ -281,6 +281,123 @@ FROM Notes.Houses
 
 
 
+-- __Exercise 2.7.5__ --
+
+--1. From the joined table, how many pets does the friend named ‘Z’ have, and what are their names?
+
+`
+SELECT *
+FROM Notes.Pets 
+`
+
+`
+SELECT *
+FROM Notes.Friends
+`
+
+`
+SELECT *
+FROM Notes.Friends F JOIN Notes.Pets P ON F.FriendID = P.FriendID
+`
+
+-- The joined table specific result for 'Z' 
+
+`
+SELECT FirstName, PetName
+FROM Notes.Friends F JOIN Notes.Pets P ON F.FriendID = P.FriendID
+WHERE FirstName = 'Z'
+`
+
+
+--2. 
+
+-- To view both tables to determine the right PK and FK --
+
+`
+SELECT *
+FROM Notes.Table1 
+`
+
+`
+SELECT *
+FROM Notes.Table2
+`
+
+-- Join on columns A
+
+`
+SELECT B, C, D 
+FROM Notes.Table1 T1 JOIN Notes.Table2 T2 ON T1.A = T2.A;
+`
+
+-- Textbook solution specified cols as T1.B, T1.C, T2.D --
+
+--For fun --
+
+`
+SELECT CONCAT(B, C, D) AS WiseQuotes
+FROM Notes.Table1 T1 JOIN Notes.Table2 T2 ON T1.A = T2.A;
+`
+
+
+-- 3. 
+
+`
+SELECT *
+FROM Ape.Friends; 
+`
+
+`
+SELECT *
+FROM Ape.Colours; 
+ `
+ 
+ -- To view the tables. PK - ColourID on Ape.Colours table, FK - FavColourID on Ape.Friends table
+
+`
+SELECT FirstName, LastName, 
+       SUBSTRING (FirstName, 1, 1) AS FirstInitial,
+       SUBSTRING (LastName, 1, 1) AS LastInitial
+FROM Ape.Friends;
+`
+
+-- To check that the initials correspond using the query 
+
+
+-- for all apes that have a favourite colour, list their initials, next to the name of their favourite colour
+-- So Ape.Friends and Ape.Colours tables must be joined 
+
+`
+SELECT ColourName,
+       SUBSTRING (FirstName, 1, 1) AS FirstInitial,
+       SUBSTRING (LastName, 1, 1) AS LastInitial
+FROM Ape.Colours AC JOIN Ape.Friends AF ON AC.ColourID = AF.FavColourID
+`
+
+-- I added col names FirstInitial, LastInitial, after SELECT and it ran errors as those cols hadn't been created yet
+
+
+-- 4. Include any apes that do not have a favourite colour
+
+-- The entry with NULL is on Ape.Friends and AF table is on the Right of the query, so use RIGHT JOIN 
+
+`
+SELECT ColourName,
+       SUBSTRING (FirstName, 1, 1) AS FirstInitial,
+       SUBSTRING (LastName, 1, 1) AS LastInitial
+FROM Ape.Colours AC RIGHT JOIN Ape.Friends AF ON AC.ColourID = AF.FavColourID
+`
+
+
+-- 5. Include any colours that are not the favourite of any ape
+
+
+`
+SELECT ColourName,
+       SUBSTRING (FirstName, 1, 1) AS FirstInitial,
+       SUBSTRING (LastName, 1, 1) AS LastInitial
+FROM Ape.Colours AC LEFT JOIN Ape.Friends AF ON AC.ColourID = AF.FavColourID
+`
 
 
 
