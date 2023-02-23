@@ -399,6 +399,122 @@ SELECT ColourName,
 FROM Ape.Colours AC LEFT JOIN Ape.Friends AF ON AC.ColourID = AF.FavColourID
 `
 
+-- __Exercise 2.7.6__ --
+
+-- Sample join query for joining 3 tables --
+
+`
+SELECT *
+FROM Table1 T1
+JOIN Table2 T2 ON T1.attribute1 = T2.attribute2
+JOIN Table3 T3 ON T2.attribute3 = T3.attribute4;
+`
+
+-- 1. Join the EatingFrom table to both the BananaTree table and the Friends table
+
+`
+SELECT *
+FROM Ape.EatingFrom
+`
+
+-- Ape.EatingFrom has no PK, both cols - FriendID and TreeID - have repetitions. 
+
+`
+SELECT *
+FROM Ape.BananaTree
+`
+
+-- Ape.BananaTree has a PK. TreeID col has no repetitions 
+
+`
+SELECT *
+FROM Ape.Friends;
+`
+
+-- Notes.Friends has a PK. FriendID col has no repetitions
+
+-- Due to having common keys to other tables, EatingFrom will be in the middle (T2). BananaTree will be T1 and Friends, T3.--
+
+
+`
+SELECT *
+FROM Ape.BananaTree T1
+    JOIN Ape.EatingFrom T2 ON T1.TreeID = T2.TreeID
+    JOIN Ape.Friends T3 ON T2.FriendID = T3.FriendID;
+`
+
+
+-- 2. Only produce results for trees planted in July 2016
+
+
+`
+SELECT T1.TreeID, T1.MonthPlanted, T1.YearPlanted
+FROM Ape.BananaTree T1
+    JOIN Ape.EatingFrom T2 ON T1.TreeID = T2.TreeID
+    JOIN Ape.Friends T3 ON T2.FriendID = T3.FriendID
+WHERE YearPlanted = '2016' AND MonthPlanted = '7'
+`
+
+
+-- 3. 
+
+`
+SELECT *
+FROM Notes.Scratched
+`
+
+-- Table has no PK. ScratcherID and ScratcheeID both have repeated nos from 1 - 3
+
+`
+SELECT *
+FROM Notes.Friends
+`
+
+-- Table has PK - FriendID, nos 1 - 3
+
+
+-- Join Friends to Scratched
+
+
+-- For scratchers
+
+`
+SELECT FirstName, ScratcherID, ScratchDate, ScratchTime
+FROM Notes.Friends T1 JOIN Notes.Scratched T2 ON T1.FriendID = T2.ScratcherID   
+`
+
+`
+SELECT FirstName AS 'ScratcherName', ScratcherID, ScratchDate, ScratchTime
+FROM Notes.Friends T1 JOIN Notes.Scratched T2 ON T1.FriendID = T2.ScratcherID  
+ORDER BY ScratchDate ASC
+`
+
+-- -- For scratchees
+
+`
+SELECT FirstName AS 'ScratcheeName', ScratcheeID, ScratchDate, ScratchTime
+FROM Notes.Friends T1 JOIN Notes.Scratched T2 ON T1.FriendID = T2.ScratcheeID  
+ORDER BY ScratchDate ASC
+`
+
+-- give diff tables, in different order dep on join cols
+-- tried joining Notes.Friends twice on the same table but kept giving errors as I used the same alias 'T1' for it in each join
+-- Solution - Use Notes.Friend twice BUT give it different aliases for each join to avoid an error. See below 
+
+
+--__Model Answer Query__--
+
+
+`
+SELECT Sr.FirstName AS ScratcherName,
+        Se.FirstName AS ScratcheeName,
+        S.ScratchDate,
+        S.ScratchTime
+FROM Notes.Friends Sr
+JOIN Notes.Scratched S ON Sr.FriendID = S.ScratcherID
+JOIN Notes.Friends Se ON Se.FriendID = S.ScratcheeID
+ORDER BY ScratchDate;
+`
 
 
 
