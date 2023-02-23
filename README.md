@@ -227,6 +227,60 @@ FROM Notes.Suburbs
 WHERE vaccination_rate >= 0.40 AND vaccination_rate <= 0.70;
 `
 
+-- __Exercise 2.7.4__ --
+
+-- 1. 
+
+`
+SELECT *
+FROM Notes.Friends 
+WHERE FavColour = NULL;
+`
+
+-- It returns no values because it is looking for any colour = NULL (the true statement), meanwhile
+-- any colour = NULL is NULL, not true
+-- Instead use query,
+
+`
+SELECT *
+FROM Notes.Friends 
+WHERE FavColour IS NULL;
+`
+
+
+-- 2. Use the IS NULL operator to find all houses where the post code is unknown.
+
+`
+SELECT house_ID, house_address
+FROM Notes.Houses
+WHERE post_code IS NULL  
+`
+
+
+-- 3. Find all houses where the post_code is not unknown.
+
+`
+SELECT house_ID, house_address
+FROM Notes.Houses
+WHERE post_code IS NOT NULL 
+`
+
+
+-- 4. Retrieve all house IDs and postcodes from the Houses table, but for any NULL postcodes, change the entry to ‘UNKNOWN’. 
+-- The postcode column in the result table should be called ‘post_code_modified’.
+
+
+`
+SELECT house_ID, post_code,
+    CASE WHEN post_code IS NULL THEN 'UNKNOWN' 
+    ELSE post_code END AS 'post_code_modified'
+FROM Notes.Houses
+`
+
+-- used ' = NULL - at first and the NULLs still were NULLs in the new column 
+
+
+
 
 
 
