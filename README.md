@@ -516,5 +516,167 @@ JOIN Notes.Friends Se ON Se.FriendID = S.ScratcheeID
 ORDER BY ScratchDate;
 `
 
+-- __Ch. 3 Textook Practice__ --
+
+`
+Select FriendID, PetDOB
+From Notes.Pets 
+Group By FriendID, PetDOB
+`
+
+-- GROUP BY groups __Rows__ -- 
+
+-- None of the other cols in the table aboove are atomic after the grouping ---
+
+-- so they run errors if you try to view them with SELECT --`
+
+-- You can't select any cols not par of the GROUP BY clause ---
+
+`
+SELECT *--Gender
+FROM Notes.RandomPeople
+GROUP BY Gender
+`
+
+
+-- When SELECT is used to perform a function, a new column is usually formed so name it with AS '' --
+-- SELECT also used to rename columns --
+
+`
+SELECT Gender, STDEV (Age) AS [SD Age]
+FROM Notes.RandomPeople
+GROUP BY Gender
+`
+
+
+--Other agg fxns --
+
+`
+SELECT Gender, 
+        MIN (PersonName) AS [First Person in Row],
+        MAX (PersonName) AS [Second Person in Row]
+FROM Notes.RandomPeople
+GROUP BY Gender
+`
+
+-- Use COUNT (*) to count all grouped rows, if not will skip NULL values ---
+
+`
+SELECT count(*)
+FROM notes.Friends
+GROUP BY FavColour
+`
+
+`
+SELECT Gender, COUNT(Distinct Gender) AS 'Distinct Gender'
+FROM Notes.RandomPeople
+GROUP BY Gender
+`
+
+`
+SELECT *
+FROM Notes.RandomPeople --Letters
+`
+
+`
+SELECT A, COUNT(DISTINCT CONCAT(A, B, Num)) AS NumAB  --
+FROM Notes.Letters
+GROUP BY A
+`
+
+-- CONCAT makes functions work across columns --
+
+-- Aggregation functions generally return the same data type as the column they are applied to --
+
+`
+SELECT Gender, AVG (Age) AS [Average Age]
+FROM Notes.RandomPeople
+GROUP BY Gender
+`
+
+
+`
+SELECT Gender,
+        AVG (Age) AS AvAge, 
+        AVG(CAST(Age AS DECIMAL(5,2))) AS AverageAge 
+FROM notes.RandomPeople
+GROUP BY Gender 
+ORDER BY AverageAge
+`
+
+
+-- Integers give integer results, decimals may be lost so use CAST to change the type of data --
+
+
+`
+SELECT CASE WHEN PersonName LIKE 'B%' THEN 'B people'
+            ELSE 'non-B people' END AS NameGroup,
+            COUNT(*) AS NumPeople
+FROM Notes.RandomPeople
+GROUP BY CASE WHEN PersonName LIKE 'B%' THEN 'B people'
+              ELSE 'non-B people' END;
+`
+
+`
+SELECT Gender, AVG(Age) AS AverageAge
+FROM Notes.RandomPeople
+GROUP BY Gender
+HAVING AVG(Age) > 40;
+`
+
+--HAVING works for grouped (aggregated) data, WHERE does not --
+
+
+-- __Exercise 3.6.1__ --
+
+
+`
+SELECT A, B, MAX(Num) AS MaxNum, MIN(Num) AS MinNum
+FROM Notes.Letters
+GROUP BY A,B;
+`
+
+
+-- Order of Execution - FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY --
+
+
+-- 3a) error cause col FavColour is not in the GROUP BY clause
+
+-- 3b) gives all colours. Surprised null is still in the table. Okay, COUNT does not include NULL, but GROUP BY does
+
+-- 3c) gives an eror. An aggregate fxn (AVG) may not appear in the WHERE clause unless it is in a subquery contained in a HAVING clause or a SELECT list
+
+-- 3d) gives error. The col name(s) in the HAVING clause must be specified in the GROUP BY clause, but can use an agg fxn with that column name
+
+
+`
+SELECT AVG(Age) AS AvAge
+FROM notes.RandomPeople
+GROUP BY Gender
+HAVING MAX(Age) > 20;
+`
+
+--- 3e)
+
+`
+SELECT Gender, MAX(Age) AS AgeMax, MIN(Age) AS AgeMin
+FROM notes.RandomPeople
+GROUP BY Gender
+HAVING COUNT(*) < 3;
+`
+
+-- Gives the max and min ages of all genders that have less than three values in the aggregated row
+
+
+--- 3f) 
+
+`
+SELECT COUNT(*)
+FROM Notes.RandomPeople;
+`
+
+-- Counts all the rows in the specified (Random People) table
+
+
 
 
