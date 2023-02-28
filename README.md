@@ -640,13 +640,15 @@ GROUP BY A,B;
 -- Order of Execution - FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY --
 
 
--- 3a) error cause col FavColour is not in the GROUP BY clause
+-- 3a) error cause col FavColour is not in the GROUP BY clause. "FirstName' and other cols now are non-atomic (contain tuple entries) so won't give any result
 
 -- 3b) gives all colours. Surprised null is still in the table. Okay, COUNT does not include NULL, but GROUP BY does
 
--- 3c) gives an eror. An aggregate fxn (AVG) may not appear in the WHERE clause unless it is in a subquery contained in a HAVING clause or a SELECT list
+-- 3c) gives an eror. An aggregate fxn (in this case 'AVG') may not appear in the WHERE clause unless it is in a subquery contained in a HAVING clause or a SELECT list
+-- i.e. __Aggregate functions must be used in HAVING or SELECT, not WHERE__
 
--- 3d) gives error. The col name(s) in the HAVING clause must be specified in the GROUP BY clause, but can use an agg fxn with that column name
+-- 3d) gives error. After using GROUP BY, there must be an aggregate fxn with the col name after HAVING clause OR the col must be specified in the GROUP BY clause, 
+-- i.e. __No agg fxn should be used with WHERE__ 
 
 
 `
@@ -665,7 +667,9 @@ GROUP BY Gender
 HAVING COUNT(*) < 3;
 `
 
--- Gives the max and min ages of all genders that have less than three values in the aggregated row
+-- Gives the max and min ages of all genders that have less than three values in the aggregated row.
+
+-- __Note__: Even if Age was not specified in the GROUP BY clause, it can be used with an aggregate fxn after SELECT and a new col created.
 
 
 --- 3f) 
@@ -677,6 +681,40 @@ FROM Notes.RandomPeople;
 
 -- Counts all the rows in the specified (Random People) table
 
+-- 4) 
+
+
+`
+SELECT SaleDate, Product, Sales
+FROM dbo.SausageSizzleSummary
+ORDER BY SaleDate
+`
+
+-- Calculate the exact average number of sales for each SaleDate.
+
+-- What is wrong with the query below??
+
+`
+SELECT SaleDate, AVG(Sales) AS AvgSales
+FROM dbo.SausageSizzleSummary
+GROUP BY SaleDate;
+`
+
+-- The 'AvgSales' results won't be 'exact' bcos it will produce integers, just like the original col 'Sales'. 
+-- Which will be whole nos rounded down, even if the decimal is >.5
+
+
+-- Write the right query --
+
+
+`
+SELECT SaleDate, AVG(CAST(Sales AS DECIMAL )) AS Avgsales
+FROM dbo.SausageSizzleSummary
+GROUP BY SaleDate;
+`
+
+-- CAST function used above to convert 'Sales' to decimals, so the results 'AvgSales' gives will be in decimals also --
+-- __Note:__ No need to specify numbers after decimals --
 
 
 
