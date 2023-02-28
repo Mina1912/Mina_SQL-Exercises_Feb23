@@ -1,8 +1,8 @@
 # SQL_Feb23
 NZSSN SQL training - February 2023
 
-**I'm currently attending th NZSSN Feb '23 course taught by Daniel Fryer** 👩‍🎓
-__Fun but challenging so far 😥
+**I'm attended the NZSSN Feb '23 course taught by Daniel Fryer** 👩‍🎓
+__Fun but challenging 😥
 Here's a copy of some of my coding exercises. Enjoy__ 😁
 
 -- __Exercise 2.7.1__ --
