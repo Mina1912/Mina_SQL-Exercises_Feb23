@@ -717,4 +717,61 @@ GROUP BY SaleDate;
 -- __Note:__ No need to specify numbers after decimals --
 
 
+-- __Exercise 3.6.2__ ---
+
+
+`
+SELECT *
+FROM Notes.EduStudy
+ORDER BY Education
+`
+
+
+-- 2) Categorise into Groups A, B or NULL
+
+
+`
+SELECT Id, Income, Education,
+    CASE WHEN (Income = 'low' OR Income = 'low-mid') AND Education > 3 THEN 'Group A'
+         WHEN (Income = 'high' OR Income = 'high-mid') AND education < 3 THEN 'Group B'
+    ELSE 'NULL' 
+    END AS Category 
+FROM Notes.EduStudy
+`
+
+-- Alternative code from solutions, shorter :) -- 
+
+`
+SELECT Id, Income, Education,
+    CASE WHEN Income IN ('low', 'low-mid') AND Education > 3 THEN 'Group A'
+         WHEN Income IN ('high', 'high-mid') AND education < 3 THEN 'Group B'
+    END AS Category 
+FROM Notes.EduStudy
+`
+
+-- __Note:__ 'NULL' does not need to be specified in the query. Any value not assigned to a group becomes 'NULL'
+
+
+-- 3) GROUP BY executes before SELECT, so 'Category' col does not exist at GROUP BY 
+
+
+-- 4) -- No idea. Below is textbook solution
+
+
+`
+SELECT COUNT(*) AS NumParticipants,
+        CASE WHEN Income IN ('low', 'low-mid') AND Education > 3 THEN 'Group A'
+             WHEN Income IN ('high', 'high-mid') AND Education < 3 THEN 'Group B'
+        END AS Category
+FROM Notes.EduStudy
+GROUP BY
+        CASE WHEN Income IN ('low', 'low-mid') AND Education > 3 THEN 'Group A'
+             WHEN Income IN ('high', 'high-mid') AND Education < 3 THEN 'Group B'
+        END;
+`
+
+-- _NB:__To group by a col that will be formed in SELECT clause, enter the query that creates that col in the GROUP BY clause.
+-- But to give the new col a name, do so under SELECT 
+
+
 
