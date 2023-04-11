@@ -774,4 +774,88 @@ GROUP BY
 -- But to give the new col a name, do so under SELECT 
 
 
+**_Some personal codes using IDI sample data_**
+
+-- Using IDI_Metadata tables to practice renaming values on >1 column --
+
+
+`
+SELECT ethnic_grp as 'Stats NZ code', description as 'ethnicity',
+    CASE WHEN [description] = 'Pacific Peoples' THEN 'Pac Peeps'
+    when [description] = 'Middle Eastern/Latin American/African' THEN 'MELAA'
+    else [description]
+    END AS 'new ethnicity',
+    CASE WHEN ethnic_grp = '1' THEN '10'
+    WHEN ethnic_grp = '4' then '40'
+    ELSE ethnic_grp
+    end AS 'new code'
+FROM clean_read_CLASSIFICATIONS.ethnicity
+`
+
+--Note: Values in multiple columns can be renamed, writing the 'case when' codes one after another. --
+-- Also, new columns must be formed for any columns that were renamed or the codes don't run --
+-- In addition, new values should be the same data type. Varchar is flexible and can accept chars or nos, but others e.g. integers will not accept another data type --
+
+
+
+-- To create a new column that is the square root of an existing column, rounding the decimal places to 2 --
+
+
+`
+SELECT snz_acc_claim_uid, acc_med_injury_count_nbr, ROUND(SQRT(acc_med_injury_count_nbr), 2) AS SqRt_Injury, acc_med_read_code_text
+FROM ACC_Clean.Medical_Codes
+`
+
+
+-- Using CONCAT to combine columns (and make a sentnce 😉) --
+--Note: Leave a space before or after the new word you are inputting b4 the quotation marks --
+
+`
+SELECT snz_acc_claim_uid, CONCAT('The guy who lives at ', acc_cla_meshblock_code, ' owes ', acc_cla_claim_costs_to_date_ex_gst_amt) AS Details
+FROM ACC_Clean.Serious_Injury
+`
+
+
+-- OR --
+
+`
+SELECT snz_acc_claim_uid, CONCAT('The guy who lives at ', acc_cla_meshblock_code, ' owed ', acc_cla_claim_costs_to_date_ex_gst_amt, ' on ', acc_cla_claim_costs_to_date_ex_gst_amt) AS Details
+from ACC_Clean.Serious_Injury
+`
+
+-- _Filter_ data from a joined dataset --
+
+`
+SELECT acc_med_injury_count_nbr, acc_med_read_code_text, acc_cla_accident_date, acc_cla_claim_costs_to_date_ex_gst_amt, acc_cla_meshblock_code
+FROM ACC_Clean.Medical_Codes M JOIN ACC_Clean.Serious_Injury S ON M.snz_acc_claim_uid = S.snz_acc_claim_uid
+WHERE acc_cla_claim_costs_to_date_ex_gst_amt <= 10000
+`
+
+_OR_
+
+
+`
+SELECT acc_med_injury_count_nbr, acc_med_read_code_text, acc_cla_accident_date, acc_cla_claim_costs_to_date_ex_gst_amt, acc_cla_ethnic_grp1_snz_uid
+FROM ACC_Clean.Medical_Codes M JOIN ACC_Clean.Serious_Injury S ON M.snz_acc_claim_uid = S.snz_acc_claim_uid
+WHERE acc_cla_meshblock_code != 'EW321'
+`
+
+-- __Join tables from different databases__ --
+
+--Note: The ones used have no common PK/FK so I used columns with integers (unique int in the case of the PK) and specified _LEFT JOIN_ so the details of the columns are kept --
+
+--Also note: Ethnicity is coded in 'E' table which is also coded in 'S' table and I want the codes to be described using 'E'' description --
+
+
+`
+SELECT snz_uid, acc_cla_accident_date, acc_cla_ethnic_grp1_snz_uid, [description]
+FROM IDI_Metadata.clean_read_CLASSIFICATIONS.ethnicity E RIGHT JOIN IDI_Clean.ACC_Clean.Serious_Injury S ON E.ethnic_grp = S.acc_cla_ethnic_grp1_snz_uid
+`
+
+
+
+
+
+
+
 
