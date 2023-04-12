@@ -852,6 +852,26 @@ SELECT snz_uid, acc_cla_accident_date, acc_cla_ethnic_grp1_snz_uid, [description
 FROM IDI_Metadata.clean_read_CLASSIFICATIONS.ethnicity E RIGHT JOIN IDI_Clean.ACC_Clean.Serious_Injury S ON E.ethnic_grp = S.acc_cla_ethnic_grp1_snz_uid
 `
 
+-- Using _WHERE_ to exclude some rows from the joined table --
+
+
+`
+SELECT snz_uid, acc_cla_accident_date, acc_cla_ethnic_grp1_snz_uid, [description]
+FROM IDI_Metadata.clean_read_CLASSIFICATIONS.ethnicity E RIGHT JOIN IDI_Clean.ACC_Clean.Serious_Injury S ON E.ethnic_grp = S.acc_cla_ethnic_grp1_snz_uid
+WHERE (([description] = 'European') AND (acc_cla_accident_date != '2016-09-12')) OR (([description] = 'European') AND (acc_cla_ethnic_grp1_snz_uid = 1))
+`
+
+-- To select rows under description with NULL values; -- 
+
+`
+SELECT snz_uid, acc_cla_accident_date, acc_cla_ethnic_grp1_snz_uid, [description]
+FROM IDI_Metadata.clean_read_CLASSIFICATIONS.ethnicity E RIGHT JOIN IDI_Clean.ACC_Clean.Serious_Injury S ON E.ethnic_grp = S.acc_cla_ethnic_grp1_snz_uid
+WHERE [description] != 'European' OR [description] IS NULL 
+` 
+
+**Note: SQL puts [description]in square brackets because it is also a command, but here it is the name of a column**
+
+
 
 
 
